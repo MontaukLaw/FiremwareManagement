@@ -45,12 +45,12 @@
 	<div id="login_win" class="easyui-window" title="登陆"
 		style="width:300px;height:250px;"
 		data-options="iconCls:'icon-save',modal:true,collapsible:false,minimizable:false,maximizable:false,closable:false">
-		<form style="padding:10px 20px 10px 40px;">
+		<form style="padding:10px 20px 10px 40px;" id="login_form">
 			<p>
-				用户名: </br> <input type="text">
+				用户名: </br> <input type="text" name="LOGIN_NAME">
 			</p>
 			<p>
-				密码: </br> <input type="password">
+				密码: </br> <input type="password" name="PASSWORD">
 			</p>
 			<div style="padding:5px;text-align:center;">
 				<a href="#" class="easyui-linkbutton" icon="icon-ok" id="login_btn">Ok</a>
@@ -69,10 +69,38 @@
 				top : 100
 			});
 	
+			//定义login_form的url, 返回数据处理
+			$('#login_form').form({
+				url : 'sys/findSysUserByLoginNamePassword.do',
+				onSubmit : function() {
+					// do some check
+					// return false to prevent submit;
+				},
+				success : function(data) {
+					//change the JSON string to javascript object
+					var data = eval('(' + data + ')');
+					if (data.success) {
+						$('#login_win').window('close');
+					} else {
+						$.messager.show({
+							title : '错误',
+							msg : data.msg,
+							timeout : 1000,
+							showType : 'slide'
+						});
+						//alert(data.msg);
+					}
+				}
+			});
+	
+			//按键提交form
 			$('#login_btn').bind('click', function() {
-				console.info('login_btn clicked');
+				//console.info('login_btn clicked');
 				//因为未写好接口, 暂时先把这个窗口关掉
-				$('#login_win').window('close');
+				//$('#login_win').window('close');
+	
+				$('#login_form').submit();
+	
 			})
 		})
 	</script>

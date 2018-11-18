@@ -10,6 +10,7 @@
 	</settings>
 
 	<typeAliases>
+		<typeAlias type="com.wulala.entity.SysUser" alias="SysUser" />
 		<typeAlias type="com.wulala.entity.FirmwareVersion" alias="FV" />
 		<typeAlias type="com.wulala.util.PageData" alias="PD" />
 		<!-- 分页 -->

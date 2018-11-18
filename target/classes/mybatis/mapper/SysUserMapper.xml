@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysUserMapper">
+	<sql id="SysUserColumns">ID, LOGIN_NAME, CREATE_TIME, STATUS
+	</sql>
+
+	<resultMap type="SysUser" id="SysUserMap">
+		<id column="ID" property="ID" />
+		<result column="LOGIN_NAME" property="LOGIN_NAME" />
+		<result column="PASSWORD" property="PASSWORD" />
+		<result column="CREATE_TIME" property="CREATE_TIME" />
+		<result column="STATUS" property="STATUS" />
+	</resultMap>
+
+	<!-- 根据用户名密码校验用户 -->
+	<select id="findSysUserByLoginNamePassword" parameterType="PD"
+		resultMap="SysUserMap">
+		SELECT
+		<include refid="SysUserColumns" />
+		FROM
+		FirmwareManagement.SYS_USER
+		WHERE 1=1
+		<if
+			test="LOGIN_NAME!=null and LOGIN_NAME!='' and PASSWORD!=null and PASSWORD!=''">
+			AND LOGIN_NAME=#{LOGIN_NAME}
+			AND PASSWORD=#{PASSWORD}
+		</if>
+
+		<if test="LOGIN_NAME==null or LOGIN_NAME=='' or PASSWORD==null or PASSWORD==''">
+			AND 1=0
+		</if>
+	</select>
+
+</mapper>
