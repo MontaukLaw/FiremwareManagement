@@ -28,15 +28,17 @@
 </head>
 <body class="easyui-layout">
 	<!-- 底层布局部分 -->
-	<div data-options="region:'north',title:'North Title',split:true"
-		style="height:100px;"></div>
-	<div data-options="region:'south',title:'South Title',split:true"
-		style="height:100px;"></div>
-	<div data-options="region:'east',title:'East',split:true"
-		style="width:100px;"></div>
-	<div data-options="region:'west',title:'West',split:true"
-		style="width:100px;"></div>
-	<div data-options="region:'center',title:'center title'"
+	<div data-options="region:'north',split:true" style="height:60px;">
+		<div style="margin:10px 20px 15px">
+			<h2>固件版本管理系统</h2>
+		</div>
+
+	</div>
+	<div data-options="region:'south',split:true" style="height:30px;">云耳科技有限公司
+		版权所有 系统维护 Marc 2018</div>
+	<div data-options="region:'west',collapsible:false,split:true"
+		style="width:200px;"></div>
+	<div data-options="region:'center'"
 		style="padding:5px;background:#eee;"></div>
 
 	<!-- 登陆遮罩window -->
