@@ -25,7 +25,7 @@ public class SysUserController extends BaseController {
 	@ResponseBody
 	public JsonMsg findSysUserByLoginNamePassword() {
 
-		logger.info("start to handling listArticleByVehicleID.do");
+		logger.info("start to handling findSysUserByLoginNamePassword.do");
 		JsonMsg json = new JsonMsg();
 		PageData pd = new PageData();
 		pd = this.getPageData();

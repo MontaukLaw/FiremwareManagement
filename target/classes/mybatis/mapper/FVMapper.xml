@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="FirmwareVersionMapper">
 	<sql id="FVColumns">ID, HARDWARE_MODEL, SN, FILE_NAME, FILE_MD5, CLIENT_NAME,
-		DESCRIPTION, FW_VERSION,FILE_SIZE,CREATE_TIME
+		DESCRIPTION, VERSION,FILE_SIZE,CREATE_TIME
 	</sql>
 
 	<resultMap type="FV" id="FirmwareVersionMap">
@@ -14,7 +14,7 @@
 		<result column="FILE_MD5" property="FILE_MD5" />
 		<result column="CLIENT_NAME" property="CLIENT_NAME" />
 		<result column="DESCRIPTION" property="DESCRIPTION" />
-		<result column="FW_VERSION" property="FW_VERSION" />
+		<result column="VERSION" property="VERSION" />
 		<result column="FILE_SIZE" property="FILE_SIZE" />
 		<result column="CREATE_TIME" property="CREATE_TIME" />
 	</resultMap>

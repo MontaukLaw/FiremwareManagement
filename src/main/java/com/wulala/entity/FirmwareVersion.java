@@ -5,10 +5,10 @@ import java.util.Date;
 public class FirmwareVersion {
 	private String ID, HARDWARE_MODEL, SN, FILE_NAME, FILE_MD5;
 	private String CLIENT_NAME, DESCRIPTION;
-	private String FW_VERSION;
+	private String VERSION;
 	private Date CREATE_TIME;
 	private Long FILE_SIZE;
-	
+
 	public Date getCREATE_TIME() {
 		return CREATE_TIME;
 	}
@@ -73,12 +73,12 @@ public class FirmwareVersion {
 		DESCRIPTION = dESCRIPTION;
 	}
 
-	public String getFW_VERSION() {
-		return FW_VERSION;
+	public String getVERSION() {
+		return VERSION;
 	}
 
-	public void setFW_VERSION(String fW_VERSION) {
-		FW_VERSION = fW_VERSION;
+	public void setVERSION(String vERSION) {
+		VERSION = vERSION;
 	}
 
 	public Long getFILE_SIZE() {
@@ -93,7 +93,7 @@ public class FirmwareVersion {
 	public String toString() {
 		return "FirmwareVersion [ID=" + ID + ", HARDWARE_MODEL=" + HARDWARE_MODEL + ", SN=" + SN + ", FILE_NAME="
 				+ FILE_NAME + ", FILE_MD5=" + FILE_MD5 + ", CLIENT_NAME=" + CLIENT_NAME + ", DESCRIPTION=" + DESCRIPTION
-				+ ", FW_VERSION=" + FW_VERSION + ", CREATE_TIME=" + CREATE_TIME + ", FILE_SIZE=" + FILE_SIZE + "]";
+				+ ", VERSION=" + VERSION + ", CREATE_TIME=" + CREATE_TIME + ", FILE_SIZE=" + FILE_SIZE + "]";
 	}
 
 }

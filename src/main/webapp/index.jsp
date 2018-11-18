@@ -28,18 +28,38 @@
 </head>
 <body class="easyui-layout">
 	<!-- 底层布局部分 -->
-	<div data-options="region:'north',split:true" style="height:60px;">
+	<div data-options="region:'north',split:true" style="height:80px;">
 		<div style="margin:10px 20px 15px">
-			<h2>固件版本管理系统</h2>
+			<h1>固件版本管理系统</h1>
 		</div>
-
 	</div>
+	<!-- 南部layout -->
 	<div data-options="region:'south',split:true" style="height:30px;">云耳科技有限公司
 		版权所有 系统维护 Marc 2018</div>
 	<div data-options="region:'west',collapsible:false,split:true"
 		style="width:200px;"></div>
+
+	<!-- 中部layout, 放置datagrid -->
 	<div data-options="region:'center'"
-		style="padding:5px;background:#eee;"></div>
+		style="padding:5px;background:#eee;">
+		<table class="easyui-datagrid"
+			data-options="singleSelect:true,collapsible:true,url:'fv/listAll.do',method:'get'">
+			<thead>
+				<tr>
+					<th data-options="field:'id',width:350,align:'center'">ID</th>
+					<th data-options="field:'create_TIME',width:150,align:'center'">记录创建日期</th>
+					<th data-options="field:'file_SIZE',width:80,align:'center'">文件尺寸</th>
+					<th data-options="field:'version',width:150,align:'center'">版本号</th>
+					<th data-options="field:'client_NAME',width:80,align:'center'">客户</th>
+					<th data-options="field:'sn',width:150,align:'center'">序列号</th>
+					<th data-options="field:'description',width:150,align:'center'">补充说明</th>
+					<th data-options="field:'file_NAME',width:150,align:'center'">文件名</th>
+					<th data-options="field:'file_MD5',width:150,align:'center'">文件MD5编码</th>
+					<th data-options="field:'hardware_MODEL',width:150,align:'center'">硬件型号</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
 
 	<!-- 登陆遮罩window -->
 	<div id="login_win" class="easyui-window" title="登陆"
@@ -57,7 +77,6 @@
 			</div>
 		</form>
 	</div>
-
 
 	<script type="text/javascript">
 		//启动用初始化脚本 
@@ -88,7 +107,7 @@
 							timeout : 1000,
 							showType : 'slide'
 						});
-						//alert(data.msg);
+					//alert(data.msg);
 					}
 				}
 			});
