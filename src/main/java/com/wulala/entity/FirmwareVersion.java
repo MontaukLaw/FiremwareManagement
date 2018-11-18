@@ -1,9 +1,21 @@
 package com.wulala.entity;
 
-public class FirmwareVersion {
-	private String ID, HARDWARE_MODEL, SN, FILE_NAME, FILE_MD5, CLIENT_NAME, DESCRIPTION, FW_VERSION;
+import java.util.Date;
 
+public class FirmwareVersion {
+	private String ID, HARDWARE_MODEL, SN, FILE_NAME, FILE_MD5;
+	private String CLIENT_NAME, DESCRIPTION;
+	private String FW_VERSION;
+	private Date CREATE_TIME;
 	private Long FILE_SIZE;
+	
+	public Date getCREATE_TIME() {
+		return CREATE_TIME;
+	}
+
+	public void setCREATE_TIME(Date cREATE_TIME) {
+		CREATE_TIME = cREATE_TIME;
+	}
 
 	public String getID() {
 		return ID;
@@ -81,7 +93,7 @@ public class FirmwareVersion {
 	public String toString() {
 		return "FirmwareVersion [ID=" + ID + ", HARDWARE_MODEL=" + HARDWARE_MODEL + ", SN=" + SN + ", FILE_NAME="
 				+ FILE_NAME + ", FILE_MD5=" + FILE_MD5 + ", CLIENT_NAME=" + CLIENT_NAME + ", DESCRIPTION=" + DESCRIPTION
-				+ ", FW_VERSION=" + FW_VERSION + ", FILE_SIZE=" + FILE_SIZE + "]";
+				+ ", FW_VERSION=" + FW_VERSION + ", CREATE_TIME=" + CREATE_TIME + ", FILE_SIZE=" + FILE_SIZE + "]";
 	}
 
 }
