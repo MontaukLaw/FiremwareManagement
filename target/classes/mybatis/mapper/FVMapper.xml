@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FirmwareVersion">
+	<sql id="FVColumns">ID, HARDWARE_MODEL, SN, FILE_NAME, FILE_MD5, CLIENT_NAME,
+		DESCRIPTION, FW_VERSION,FILE_SIZE
+	</sql>
+
+	<resultMap type="FV" id="FirmwareVersionMap">
+		<id column="ID" property="ID" />
+		<result column="HARDWARE_MODEL" property="HARDWARE_MODEL" />
+		<result column="SN" property="SN" />
+		<result column="FILE_NAME" property="FILE_NAME" />
+		<result column="FILE_MD5" property="FILE_MD5" />
+		<result column="CLIENT_NAME" property="CLIENT_NAME" />
+		<result column="DESCRIPTION" property="DESCRIPTION" />
+		<result column="FW_VERSION" property="FW_VERSION" />
+		<result column="FILE_SIZE" property="FILE_SIZE" />
+	</resultMap>
+
+	<!-- 根据产品型号搜索最新的固件 -->
+	<select id="findLastFirmwareByModel" parameterType="PD" resultMap="FirmwareVersionMap">
+		SELECT
+		<include refid="FVColumns" />
+		FROM
+		FirmwareManagement.FIRMWARE_VERSION
+		ORDER BY CREATE_TIME DESC
+		LIMIT 0,1
+	</select>
+
+	<!-- 新增wechat用户 -->
+	<insert id="addLink" parameterType="pd" flushCache="false">
+		INSERT
+		INTO
+		BASE_INFO.LINK
+		(SHORT_LINK,LONG_LINK,ACTIVATE, CREATE_TIME)
+		VALUES
+		(#{SHORT_LINK},#{LONG_LINK},1,now())
+	</insert>
+
+</mapper>

@@ -9,6 +9,13 @@
 		<setting name="defaultExecutorType" value="REUSE" />
 	</settings>
 
+	<typeAliases>
+		<typeAlias type="com.wulala.entity.FirmwareVersion" alias="FV" />
+		<typeAlias type="com.wulala.util.PageData" alias="PD" />
+		<!-- 分页 -->
+		<typeAlias type="com.wulala.entity.Page" alias="Page" />
+	</typeAliases>
+
 	<plugins>
 		<plugin interceptor="com.wulala.plugin.PagePlugin">
 			<property name="dialect" value="mysql" />
