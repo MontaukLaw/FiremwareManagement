@@ -100,12 +100,24 @@
 			</table>
 		</form>
 
-		<div class="upload">
-			<form action="file/upload.do" enctype="multipart/form-data"
-				method="post">
-				<input type="file" name="file" /><br> <input type="submit"
-					value="上传" /><br>
+		<!-- 文件上传的部分 -->
+		<div class="upload" style="padding:10px 20px 10px 40px;">
+			<form enctype="multipart/form-data" method="post"
+				action="file/upload.do" id="file_upload_form">
+				<input type="text" name="HARDWARE_MODEL" value="xxxxx" /> <input
+					type="file" name="file" value="选择文件" /> &nbsp;&nbsp; <a href="#"
+					class="easyui-linkbutton" iconCls="icon-add"
+					id="file_upload_confirm_btn">上传</a> <input type="submit" name="上传"
+					value="上传"> <br>
 			</form>
+
+			<div class="item">
+				<input type="file" name="myfile">
+			</div>
+			<div class="item">
+				<button type="button" style="display: block; padding: 4px 18px;"
+					class="btn-default">ajax提交</button>
+			</div>
 		</div>
 	</div>
 
@@ -133,6 +145,8 @@
 	$(function() {
 		//测试脚本启动及jQuery引用
 		console.info('scrtip start..');
+
+		var submitUrl = '';
 
 		//将panel隐藏一下
 		$('#add_panel').window('close');
@@ -191,9 +205,76 @@
 		$('#tool_bar_add_btn').bind('click', function() {
 			$('#add_panel').window("setTitle", "新增记录");
 			$('#add_panel').window('open');
-			$('#add_edit_form').clear();
-		//url=....
+			$('#add_edit_form').form('clear');
+			submitUrl = 'file/upload.do';
+		});
+
+		//确定上传按钮
+		$('#file_upload_confirm_btn').bind('click', function() {
+			//console.info('file_upload_confirm_btn clicked');
+			$.ajax({
+				type : "POST",
+				url : submitUrl,
+				data : data,
+				success : function(result) {
+					$.messager.show({
+						title : "OK!",
+						msg : result.obj
+					})
+				},
+				dataType : dataType
+			});
+		});
+
+
+
+		$('input[name=myfile]').on('change', function(e) {
+			$('button[type=button]').on('click', function(e) {
+
+				upload();
+				console.info(submitUrl);
+				var formData = new FormData();
+				// formData.ppend(name, element);
+				formData.append('myfile', $('input[name=myfile]')[0].files[0]);
+				console.info(formData);
+				$.ajax({
+					url : submitUrl,
+					method : 'POST',
+					data : formData,
+					contentType : false, // 注意这里应设为false
+					processData : false,
+					cache : false,
+					success : function(data) {
+						if (JSON.parse(data).result == 1) {
+							$('.prompt').html(`文件${JSON.parse(data).filename}已上传成功`);
+						}
+					},
+					error : function(jqXHR) {
+						console.log(JSON.stringify(jqXHR));
+					}
+				})
+					.done(function(data) {
+						console.log('done');
+					})
+					.fail(function(data) {
+						console.log('fail');
+					})
+					.always(function(data) {
+						console.log('always');
+					});
+			});
 		});
 	})
+
+	function upload() {
+		$.ajax({
+			url : 'file/upload',
+			type : 'POST',
+			cache : false,
+			data : new FormData($('#file_upload_form')[0]),
+			processData : false,
+			contentType : false
+		});
+	}
 </script>
 </html>
