@@ -70,22 +70,45 @@
 	</div>
 
 	<!-- 修改及新增panel -->
-	<div id="add_panel" class="easyui-window" title="新增记录"
+	<div id="add_panel" class="easyui-window"
 		style="width:600px;height:500px;"
 		data-options="collapsible:false,minimizable:false,maximizable:false">
-		<form style="padding:10px 20px 10px 40px;" id="add_edit_form">
+		<form style="padding:10px 20px 10px 40px;" id="add_edit_form"
+			method="post">
 			<table>
 				<tr>
-					<td>ID</td>
-					<td><span id="add_update_form_id"></span></td>
+					<td>客户</td>
+					<td><input type="text" id="client_name_input"
+						name="CLIENT_NAME" style="width: 150px"> &nbsp;</td>
 				</tr>
 				<tr>
-					<td>xxx</td>
+					<td>硬件型号</td>
+					<td><input type="text" id="hardware_model_input"
+						name="HARDWRAE_MODEL" style="width: 150px"
+						data-options="required:true"> &nbsp;</td>
 				</tr>
+				<tr>
+					<td>固件描述</td>
+					<td><textarea rows="3" cols="20" name="DESCRIPTION"></textarea></td>
+				</tr>
+				<tr>
+					<td>序列号</td>
+					<td><input type="text" id="sn_input" name="SN"
+						style="width: 150px" data-options="required:true"> &nbsp;</td>
+				</tr>
+
 			</table>
 		</form>
+
+		<div class="upload">
+			<form action="file/upload.do" enctype="multipart/form-data"
+				method="post">
+				<input type="file" name="file" /><br> <input type="submit"
+					value="上传" /><br>
+			</form>
+		</div>
 	</div>
-	
+
 	<!-- 登陆遮罩window -->
 	<div id="login_win" class="easyui-window" title="登陆"
 		style="width:300px;height:250px;"
@@ -166,10 +189,10 @@
 
 		//新增记录按钮
 		$('#tool_bar_add_btn').bind('click', function() {
-			$('#add_panel').window("setTitle", "添加车辆维修/保养记录");
+			$('#add_panel').window("setTitle", "新增记录");
 			$('#add_panel').window('open');
 			$('#add_edit_form').clear();
-			//url=....
+		//url=....
 		});
 	})
 </script>
