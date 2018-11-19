@@ -42,7 +42,15 @@
 	<!-- 中部layout, 放置datagrid -->
 	<div data-options="region:'center'"
 		style="padding:5px;background:#eee;">
-		<table class="easyui-datagrid"
+		<!-- 工具栏 -->
+		<div style="margin-bottom:5px">
+			<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"
+				id="tool_bar_add_btn"></a> <a href="#" class="easyui-linkbutton"
+				iconCls="icon-edit" plain="true" id="tool_bar_add_btn"></a> <a
+				href="#" class="easyui-linkbutton" iconCls="icon-remove"
+				plain="true" id="tool_bar_remove_btn"></a>
+		</div>
+		<table class="easyui-datagrid" id="fv_datagrid"
 			data-options="singleSelect:true,collapsible:true,url:'fv/listAll.do',method:'get'">
 			<thead>
 				<tr>
@@ -61,6 +69,23 @@
 		</table>
 	</div>
 
+	<!-- 修改及新增panel -->
+	<div id="add_panel" class="easyui-window" title="新增记录"
+		style="width:600px;height:500px;"
+		data-options="collapsible:false,minimizable:false,maximizable:false">
+		<form style="padding:10px 20px 10px 40px;" id="add_edit_form">
+			<table>
+				<tr>
+					<td>ID</td>
+					<td><span id="add_update_form_id"></span></td>
+				</tr>
+				<tr>
+					<td>xxx</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
 	<!-- 登陆遮罩window -->
 	<div id="login_win" class="easyui-window" title="登陆"
 		style="width:300px;height:250px;"
@@ -78,50 +103,74 @@
 		</form>
 	</div>
 
-	<script type="text/javascript">
-		//启动用初始化脚本 
-		$(function() {
-			//测试脚本启动及jQuery引用
-			console.info('scrtip start..');
-			//此处将window拉到中间位置.
-			$('#login_win').window({
-				top : 100
-			});
-	
-			//定义login_form的url, 返回数据处理
-			$('#login_form').form({
-				url : 'sys/findSysUserByLoginNamePassword.do',
-				onSubmit : function() {
-					// do some check
-					// return false to prevent submit;
-				},
-				success : function(data) {
-					//change the JSON string to javascript object
-					var data = eval('(' + data + ')');
-					if (data.success) {
-						$('#login_win').window('close');
-					} else {
-						$.messager.show({
-							title : '错误',
-							msg : data.msg,
-							timeout : 1000,
-							showType : 'slide'
-						});
-					//alert(data.msg);
-					}
-				}
-			});
-	
-			//按键提交form
-			$('#login_btn').bind('click', function() {
-				//console.info('login_btn clicked');
-				//因为未写好接口, 暂时先把这个窗口关掉
-				//$('#login_win').window('close');
-	
-				$('#login_form').submit();
-	
-			})
-		})
-	</script>
+
 </body>
+<script type="text/javascript">
+	//启动用初始化脚本 
+	$(function() {
+		//测试脚本启动及jQuery引用
+		console.info('scrtip start..');
+
+		//将panel隐藏一下
+		$('#add_panel').window('close');
+
+		//此处将window拉到中间位置.
+		$('#login_win').window({
+			top : 100
+		});
+
+		//定义login_form的url, 返回数据处理
+		$('#login_form').form({
+			url : 'sys/findSysUserByLoginNamePassword.do',
+			onSubmit : function() {
+				// do some check
+				// return false to prevent submit;
+			},
+			success : function(data) {
+				//change the JSON string to javascript object
+				var data = eval('(' + data + ')');
+				if (data.success) {
+					$('#login_win').window('close');
+				} else {
+					$.messager.show({
+						title : '错误',
+						msg : data.msg,
+						timeout : 1000,
+						showType : 'slide'
+					});
+				//alert(data.msg);
+				}
+			}
+		});
+
+		//按键提交form
+		$('#login_btn').bind('click', function() {
+			//console.info('login_btn clicked');
+			//因为未写好接口, 暂时先把这个窗口关掉
+			//$('#login_win').window('close');
+
+			$('#login_form').submit();
+
+		})
+
+		//删除按钮
+		$('#tool_bar_remove_btn').bind('click', function() {
+			//console.info('remove_btn');
+			var row = $('#fv_datagrid').datagrid("getSelected");
+			//console.info(row);
+			if (row) {
+				url = 'fv/removeByID.do';
+
+			}
+		});
+
+		//新增记录按钮
+		$('#tool_bar_add_btn').bind('click', function() {
+			$('#add_panel').window("setTitle", "添加车辆维修/保养记录");
+			$('#add_panel').window('open');
+			$('#add_edit_form').clear();
+			//url=....
+		});
+	})
+</script>
 </html>

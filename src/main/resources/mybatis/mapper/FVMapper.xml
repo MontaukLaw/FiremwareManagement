@@ -42,4 +42,14 @@
 		CREATE_TIME DESC
 	</select>
 
+	<insert id="addFV" parameterType="PD">
+		INSERT INTO
+		FirmwareManagement.FIRMWARE_VERSION (ID, HARDWARE_MODEL, SN,
+		FILE_NAME, FILE_MD5, CLIENT_NAME,
+		DESCRIPTION,
+		VERSION,FILE_SIZE,CREATE_TIME) VALUES
+		(uuid(),#{HARDWARE_MODEL},#{SN},#{FILE_NAME},
+		#{FILE_MD5},#{CLIENT_NAME},#{DESCRIPTION},#{VERSION},#{FILE_SIZE},now())
+	</insert>
+
 </mapper>

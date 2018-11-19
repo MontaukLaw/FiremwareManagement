@@ -21,4 +21,8 @@ public class FirmwareVersionService {
 		return (List<FirmwareVersion>) dao.findForList("FirmwareVersionMapper.listAll", pd);
 	}
 
+	public int addFV(PageData pd) throws Exception {
+		return (int) dao.save("FirmwareVersionMapper.addFV", pd);
+	}
+
 }

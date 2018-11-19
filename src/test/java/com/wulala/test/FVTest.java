@@ -22,13 +22,25 @@ public class FVTest {
 	@Resource(name = "firmwareVersionService")
 	private FirmwareVersionService firmwareVersionService;
 
-	@Test
+	//@Test
 	public void listAllTest() {
 		PageData pd = new PageData();
 		Map userInfo = new HashMap();
 		pd.putAll(userInfo);
 		try {
 			logger.info(firmwareVersionService.listAllFV(pd));
+		} catch (Exception e) {
+			logger.error(e.toString(), e);
+		}
+	}
+
+	@Test
+	public void addFVTest() {
+		PageData pd = new PageData();
+		Map userInfo = new HashMap();
+		pd.putAll(userInfo);
+		try {
+			logger.info(firmwareVersionService.addFV(pd));
 		} catch (Exception e) {
 			logger.error(e.toString(), e);
 		}

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wulala.entity.FirmwareVersion;
+import com.wulala.entity.JsonMsg;
 import com.wulala.service.FirmwareVersionService;
 import com.wulala.util.Grid;
 import com.wulala.util.PageData;
@@ -23,7 +24,7 @@ public class FirmwareVersionController extends BaseController {
 
 	@RequestMapping(value = "/listAll")
 	@ResponseBody
-	private Grid listAllFV() {
+	public Grid listAllFV() {
 		logger.info("start to handling listAllFV.do");
 		Grid grid = new Grid();
 		PageData pd = new PageData();
@@ -38,9 +39,30 @@ public class FirmwareVersionController extends BaseController {
 		return grid;
 	}
 
+	@RequestMapping(value = "addFV")
+	@ResponseBody
+	public JsonMsg addFV() {
+		JsonMsg json = new JsonMsg();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		try {
+			int result = firmwareVersionService.addFV(pd);
+			if (result > 0) {
+				json.setMsg("插入" + result + "条数据");
+			}else{
+				json.setMsg("数据插入失败, 请联系系统管理员");
+			}
+		} catch (Exception e) {
+			json.setSuccess(false);
+			json.setMsg(e.getStackTrace().toString());
+		}
+		return json;
+
+	}
+
 	@RequestMapping(value = "/listAllFVAPP")
 	@ResponseBody
-	private Grid listAllFVAPP() {
+	public Grid listAllFVAPP() {
 		logger.info("start to handling listAllFV.do");
 		Grid grid = new Grid();
 		PageData pd = new PageData();
