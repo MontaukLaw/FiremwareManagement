@@ -80,22 +80,40 @@
 				<tr>
 					<td>客户</td>
 					<td><input type="text" id="client_name_input"
-						name="CLIENT_NAME" style="width: 150px"> &nbsp;</td>
+						name="CLIENT_NAME" style="width: 150px" class="easyui-textbox">
+						&nbsp;</td>
 				</tr>
 				<tr>
 					<td>硬件型号</td>
 					<td><input type="text" id="hardware_model_input"
-						name="HARDWRAE_MODEL" style="width: 150px"
-						data-options="required:true"> &nbsp;</td>
+						name="HARDWRAE_MODEL" style="width: 150px" class="easyui-textbox">
+						&nbsp;</td>
 				</tr>
 				<tr>
 					<td>固件描述</td>
-					<td><textarea rows="3" cols="20" name="DESCRIPTION"></textarea></td>
+					<td><input type="text" id="sn_input" name="DESCRIPTION"
+						class="easyui-textbox" style="width: 350px"> &nbsp;</td>
 				</tr>
 				<tr>
 					<td>序列号</td>
 					<td><input type="text" id="sn_input" name="SN"
-						style="width: 150px" data-options="required:true"> &nbsp;</td>
+						class="easyui-textbox" style="width: 150px"> &nbsp;</td>
+				</tr>
+				<tr>
+					<td>文件尺寸</td>
+					<td><input type="text" id="file_size_input" name="FILE_SIZE"
+						class="easyui-textbox" style="width: 150px">
+						&nbsp;Bytes/字节</td>
+				</tr>
+				<tr>
+					<td>文件名以及路径</td>
+					<td><input type="text" id="file_name_input" name="FILE_NAME"
+						style="width: 350px" class="easyui-textbox"> &nbsp;</td>
+				</tr>
+				<tr>
+					<td>文件MD5校验码</td>
+					<td><input type="text" id="file_md5_input" name="FILE_MD5"
+						style="width: 350px" class="easyui-textbox"> &nbsp;</td>
 				</tr>
 
 			</table>
@@ -103,11 +121,19 @@
 
 		<!-- 文件上传的部分 -->
 		<div class="upload" style="padding:10px 20px 10px 40px;">
-			-----------------------------</br>
+
 			<form id="uploadForm" enctype="multipart/form-data">
-				文件:<input id="file" type="file" name="file" />
+				<input id="file" type="file" name="file" />
 			</form>
 			<button id="upload">上传文件</button>
+
+		</div>
+		<div style="padding:10px 20px 10px 40px;">
+			<a id="save_panel_comfirm_btn" href="#" class="easyui-linkbutton"
+				data-options="iconCls:'icon-ok'">确定</a>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="save_panel_cancel_btn"
+				href="#" class="easyui-linkbutton"
+				data-options="iconCls:'icon-cancel'">取消</a>
 
 		</div>
 	</div>
@@ -217,6 +243,28 @@
 			});
 		});
 
+		//确定提交表单按钮
+		$('#save_panel_comfirm_btn').bind('click', function() {
+			console.info('file_upload_confirm_btn clicked');
+			if ($('#file_name_input').textbox('getValue') == '') {
+				$.messager.show({
+					title : '提示',
+					msg : '请先上传文件',
+					timeout : 1000,
+					showType : 'slide'
+				});
+			} else {
+				$('#login_form').submit();
+			}
+		});
+
+		//取消表单按钮
+		$('#save_panel_cancel_btn').bind('click', function() {
+			console.info('save_panel_cancel_btn clicked');
+			$('#add_panel').window('close');
+		});
+
+
 	})
 </script>
 
@@ -237,12 +285,41 @@
 				//var jdata = eval('(' + data + ')');
 				if (data.success) {
 					//$('#login_win').window('close');
-					console.info('yeah!');
+					//console.info('yeah!');
+					$.messager.show({
+						title : '成功',
+						msg : data.msg,
+						timeout : 1000,
+						showType : 'slide'
+					});
+
+					//设置需要填充的内容
+					$('#file_size_input').textbox('readonly', true);
+					$('#file_size_input').textbox('setValue', data.obj.fileSize);
+
+					$('#file_name_input').textbox('readonly', true);
+					$('#file_name_input').textbox('setValue', data.obj.filePath);
+
+					$('#file_md5_input').textbox('readonly', true);
+					$('#file_md5_input').textbox('setValue', data.obj.fileMD5);
+
+
 				} else {
-					console.info('false');
+					//console.info('false');
+					$.messager.show({
+						title : '错误',
+						msg : data.msg,
+						timeout : 1000,
+						showType : 'slide'
+					});
 				}
 			}).error(function() {
-				alert("上传失败");
+				$.messager.show({
+					title : '错误',
+					msg : data.msg + '   上传失败',
+					timeout : 1000,
+					showType : 'slide'
+				});
 			});
 		});
 	});

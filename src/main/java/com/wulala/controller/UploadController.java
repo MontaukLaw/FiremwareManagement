@@ -51,7 +51,7 @@ public class UploadController extends BaseController {
 			String md5 = Md5CaculateUtil.getMD5(new File(fullFilePath));
 
 			// 记录文件目录信息
-			fileInfo.setFilePath(fullFilePath);
+			fileInfo.setFilePath(subFolderName + file.getOriginalFilename());
 
 			// 记录文件大小
 			fileInfo.setFileSize((long) file.getBytes().length);
