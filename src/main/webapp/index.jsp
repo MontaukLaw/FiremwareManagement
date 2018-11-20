@@ -158,12 +158,15 @@
 
 </body>
 <script type="text/javascript">
+
+	var submitUrl = '';
+	
 	//启动用初始化脚本 
 	$(function() {
 		//测试脚本启动及jQuery引用
 		console.info('scrtip start..');
 
-		var submitUrl = '';
+
 
 		//将panel隐藏一下
 		$('#add_panel').window('close');
@@ -185,6 +188,31 @@
 				var data = eval('(' + data + ')');
 				if (data.success) {
 					$('#login_win').window('close');
+				} else {
+					$.messager.show({
+						title : '错误',
+						msg : data.msg,
+						timeout : 1000,
+						showType : 'slide'
+					});
+				//alert(data.msg);
+				}
+			}
+		});
+
+		$('#add_edit_form').form({
+			url : 'fv/addFV.do',
+			onSubmit : function() {
+				// do some check
+				// return false to prevent submit;
+			},
+			success : function(data) {
+				//change the JSON string to javascript object
+				console.info(data);
+				var data = eval('(' + data + ')');
+				console.info(data);
+				if (data.success) {
+					$('#add_panel').window('close');
 				} else {
 					$.messager.show({
 						title : '错误',
@@ -226,26 +254,10 @@
 			submitUrl = 'file/upload.do';
 		});
 
-		//确定上传按钮
-		$('#file_upload_confirm_btn').bind('click', function() {
-			//console.info('file_upload_confirm_btn clicked');
-			$.ajax({
-				type : "POST",
-				url : submitUrl,
-				data : data,
-				success : function(result) {
-					$.messager.show({
-						title : "OK!",
-						msg : result.obj
-					})
-				},
-				dataType : dataType
-			});
-		});
-
 		//确定提交表单按钮
 		$('#save_panel_comfirm_btn').bind('click', function() {
-			console.info('file_upload_confirm_btn clicked');
+			console.info('save_panel_comfirm_btn clicked');
+			submitUrl = 'fv/addFV.do';
 			if ($('#file_name_input').textbox('getValue') == '') {
 				$.messager.show({
 					title : '提示',
@@ -254,7 +266,7 @@
 					showType : 'slide'
 				});
 			} else {
-				$('#login_form').submit();
+				$('#add_edit_form').submit();
 			}
 		});
 
@@ -288,7 +300,7 @@
 					//console.info('yeah!');
 					$.messager.show({
 						title : '成功',
-						msg : data.msg,
+						msg : data.msg + ' 上传成功',
 						timeout : 1000,
 						showType : 'slide'
 					});
