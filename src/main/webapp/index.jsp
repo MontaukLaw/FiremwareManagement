@@ -45,26 +45,32 @@
 		style="padding:5px;background:#eee;">
 		<!-- 工具栏 -->
 		<div style="margin-bottom:5px">
-			<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true"
-				id="tool_bar_add_btn"></a> <a href="#" class="easyui-linkbutton"
-				iconCls="icon-edit" plain="true" id="tool_bar_add_btn"></a> <a
-				href="#" class="easyui-linkbutton" iconCls="icon-remove"
-				plain="true" id="tool_bar_remove_btn"></a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-add"
+				id="tool_bar_add_btn">新增版本记录</a> <a href="#"
+				class="easyui-linkbutton" iconCls="icon-edit" id="tool_bar_add_btn">编辑版本记录</a>
+			<a href="#" class="easyui-linkbutton" iconCls="icon-remove"
+				id="tool_bar_remove_btn">删除一条记录</a> <a href="#"
+				class="easyui-linkbutton" iconCls="icon-reload"
+				id="tool_bar_reload_btn">刷新</a>
 		</div>
 		<table class="easyui-datagrid" id="fv_datagrid"
 			data-options="singleSelect:true,collapsible:true,url:'fv/listAll.do',method:'get'">
 			<thead>
 				<tr>
-					<th data-options="field:'id',width:350,align:'center'">ID</th>
-					<th data-options="field:'create_TIME',width:150,align:'center'">记录创建日期</th>
+					<th data-options="field:'file_NAME',width:350,align:'center'">文件名</th>
+					<th data-options="field:'file_MD5',width:350,align:'center'">文件MD5编码</th>
+					<th data-options="field:'hardware_MODEL',width:150,align:'center'">硬件型号</th>
+					<th data-options="field:'id',width:350,align:'center',hidden:true">ID</th>
+					<th
+						data-options="field:'create_TIME',width:200,align:'center',formatter:function(value,row,index){  
+                         var unixTimestamp = new Date(value); return unixTimestamp.toLocaleString();  
+                         } ">记录创建日期</th>
 					<th data-options="field:'file_SIZE',width:80,align:'center'">文件尺寸</th>
 					<th data-options="field:'version',width:150,align:'center'">版本号</th>
 					<th data-options="field:'client_NAME',width:80,align:'center'">客户</th>
 					<th data-options="field:'sn',width:150,align:'center'">序列号</th>
 					<th data-options="field:'description',width:150,align:'center'">补充说明</th>
-					<th data-options="field:'file_NAME',width:150,align:'center'">文件名</th>
-					<th data-options="field:'file_MD5',width:150,align:'center'">文件MD5编码</th>
-					<th data-options="field:'hardware_MODEL',width:150,align:'center'">硬件型号</th>
+
 				</tr>
 			</thead>
 		</table>
@@ -86,8 +92,13 @@
 				<tr>
 					<td>硬件型号</td>
 					<td><input type="text" id="hardware_model_input"
-						name="HARDWRAE_MODEL" style="width: 150px" class="easyui-textbox">
+						name="HARDWARE_MODEL" style="width: 150px" class="easyui-textbox">
 						&nbsp;</td>
+				</tr>
+				<tr>
+					<td>版本号</td>
+					<td><input type="text" id="version_input" name="VERSION"
+						style="width: 150px" class="easyui-textbox"> &nbsp;</td>
 				</tr>
 				<tr>
 					<td>固件描述</td>
@@ -160,13 +171,11 @@
 <script type="text/javascript">
 
 	var submitUrl = '';
-	
+
 	//启动用初始化脚本 
 	$(function() {
 		//测试脚本启动及jQuery引用
 		console.info('scrtip start..');
-
-
 
 		//将panel隐藏一下
 		$('#add_panel').window('close');
@@ -213,6 +222,14 @@
 				console.info(data);
 				if (data.success) {
 					$('#add_panel').window('close');
+					$.messager.show({
+						title : '成功',
+						msg : '数据插入成功',
+						timeout : 1000,
+						showType : 'slide'
+					});
+					$('#fv_datagrid').datagrid('reload');
+					$('#uploadForm').form('clear');
 				} else {
 					$.messager.show({
 						title : '错误',
@@ -275,6 +292,12 @@
 			console.info('save_panel_cancel_btn clicked');
 			$('#add_panel').window('close');
 		});
+
+		$('#tool_bar_reload_btn').bind('click', function() {
+			$('#fv_datagrid').datagrid('reload');
+		});
+
+
 
 
 	})
