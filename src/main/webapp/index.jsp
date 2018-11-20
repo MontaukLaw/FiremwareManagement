@@ -25,6 +25,7 @@
 <script type="text/javascript" src="<%=basePath%>static/jquery.min.js"></script>
 <script type="text/javascript"
 	src="<%=basePath%>static/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>static/ajaxuploader.js"></script>
 </head>
 <body class="easyui-layout">
 	<!-- 底层布局部分 -->
@@ -102,22 +103,12 @@
 
 		<!-- 文件上传的部分 -->
 		<div class="upload" style="padding:10px 20px 10px 40px;">
-			<form enctype="multipart/form-data" method="post"
-				action="file/upload.do" id="file_upload_form">
-				<input type="text" name="HARDWARE_MODEL" value="xxxxx" /> <input
-					type="file" name="file" value="选择文件" /> &nbsp;&nbsp; <a href="#"
-					class="easyui-linkbutton" iconCls="icon-add"
-					id="file_upload_confirm_btn">上传</a> <input type="submit" name="上传"
-					value="上传"> <br>
+			-----------------------------</br>
+			<form id="uploadForm" enctype="multipart/form-data">
+				文件:<input id="file" type="file" name="file" />
 			</form>
+			<button id="upload">上传文件</button>
 
-			<div class="item">
-				<input type="file" name="myfile">
-			</div>
-			<div class="item">
-				<button type="button" style="display: block; padding: 4px 18px;"
-					class="btn-default">ajax提交</button>
-			</div>
 		</div>
 	</div>
 
@@ -226,55 +217,34 @@
 			});
 		});
 
+	})
+</script>
 
-
-		$('input[name=myfile]').on('change', function(e) {
-			$('button[type=button]').on('click', function(e) {
-
-				upload();
-				console.info(submitUrl);
-				var formData = new FormData();
-				// formData.ppend(name, element);
-				formData.append('myfile', $('input[name=myfile]')[0].files[0]);
-				console.info(formData);
-				$.ajax({
-					url : submitUrl,
-					method : 'POST',
-					data : formData,
-					contentType : false, // 注意这里应设为false
-					processData : false,
-					cache : false,
-					success : function(data) {
-						if (JSON.parse(data).result == 1) {
-							$('.prompt').html(`文件${JSON.parse(data).filename}已上传成功`);
-						}
-					},
-					error : function(jqXHR) {
-						console.log(JSON.stringify(jqXHR));
-					}
-				})
-					.done(function(data) {
-						console.log('done');
-					})
-					.fail(function(data) {
-						console.log('fail');
-					})
-					.always(function(data) {
-						console.log('always');
-					});
+<!-- 独立出来的文件上传用ajax -->
+<script type="text/javascript">
+	$(function() {
+		$("#upload").click(function() {
+			var formData = new FormData($('#uploadForm')[0]);
+			$.ajax({
+				type : 'post',
+				url : "file/upload.do",
+				data : formData,
+				cache : false,
+				processData : false,
+				contentType : false,
+			}).success(function(data) {
+				console.info(data);
+				//var jdata = eval('(' + data + ')');
+				if (data.success) {
+					//$('#login_win').window('close');
+					console.info('yeah!');
+				} else {
+					console.info('false');
+				}
+			}).error(function() {
+				alert("上传失败");
 			});
 		});
-	})
-
-	function upload() {
-		$.ajax({
-			url : 'file/upload',
-			type : 'POST',
-			cache : false,
-			data : new FormData($('#file_upload_form')[0]),
-			processData : false,
-			contentType : false
-		});
-	}
+	});
 </script>
 </html>

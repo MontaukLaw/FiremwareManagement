@@ -25,10 +25,11 @@ public class UploadController extends BaseController {
 	@RequestMapping(value = "upload", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMsg upload(MultipartFile file) {
+		logger.info("start to handling uploading");
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		JsonMsg json = new JsonMsg();
-		logger.info("xxx" + pd.getString("HARDWARE_MODEL"));
+		logger.info("xxx" + pd.get("HARDWARE_MODEL"));
 		try {
 			SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyyMMdd\\HHmmss");
 			// 获取日期,组成目录名
