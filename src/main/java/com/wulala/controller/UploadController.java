@@ -34,10 +34,10 @@ public class UploadController extends BaseController {
 
 		// logger.info("xxx" + pd.get("HARDWARE_MODEL"));
 		try {
-			SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyyMMdd\\HHmmss");
+			SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyyMMdd//HHmmss");
 
 			// 获取日期,组成目录名
-			String subFolderName = dateformat1.format(new Date()) + "\\";
+			String subFolderName = dateformat1.format(new Date()) + "//";
 
 			// 获取根目录名, 当然这个解决方案很烂, 但是没有google到正确的方法, 回头再改
 			// 找到问题了,可以读properties文件了

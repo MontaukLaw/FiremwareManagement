@@ -23,10 +23,10 @@ public class MD5Test {
 
 	@Test
 	public void genTimeString() {
-		SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyyMMdd\\HHmmss");
+		SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyyMMdd//HHmmss");
 		String a1 = dateformat1.format(new Date());
-		String fileName = a1 + "\\" + UuidUtil.get32UUID();
-		System.out.println(fileName);
+		String fileName = a1 + "//" + UuidUtil.get32UUID();
+		//System.out.println(fileName);
 	}
 
 	@Test
@@ -39,15 +39,26 @@ public class MD5Test {
 		properties.getProperty("proc");
 
 	}
-	
+
 	@Test
-	public void readP() throws Exception{
+	public void readP() throws Exception {
 		String path = MD5Test.class.getClassLoader().getResource("prod.properties").getPath();
 		FileInputStream in = new FileInputStream(path);
 		Properties prop = new Properties();
 		prop.load(in);
 		System.out.println(prop.getProperty("proc"));
-		
+
+	}
+
+	@Test
+	public void osCheck() {
+		String os = System.getProperty("os.name");
+		System.out.println(os);
+		if (os.toLowerCase().startsWith("win")) {
+			System.out.println("Win");
+		} else {
+			System.out.println("Linux");
+		}
 	}
 
 }
