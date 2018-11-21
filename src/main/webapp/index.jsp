@@ -84,8 +84,7 @@
 		data-options="collapsible:false,minimizable:false,maximizable:false">
 		<form style="padding:10px 20px 10px 40px;" id="add_edit_form"
 			method="post">
-			<input type="text" id="id_input" name="ID" style="width: 150px"
-				class="easyui-textbox" data-options="hidden:true">
+			<input type="text" id="id_input" name="ID" class="easyui-textbox">
 			<table>
 				<tr>
 					<td>客户</td>
@@ -183,6 +182,8 @@
 		//测试脚本启动及jQuery引用
 		console.info('scrtip start..');
 
+		$('#id_input').next().hide();
+
 		//将panel隐藏一下
 		$('#add_panel').window('close');
 
@@ -272,12 +273,14 @@
 				$('#add_panel').window("setTitle", "修改记录");
 				$('#add_panel').window('open');
 				submitUrl = 'fv/updateFVByID.do';
+
 				$('#client_name_input').textbox('setValue', row.client_NAME);
 				$('#hardware_model_input').textbox('setValue', row.hardware_MODEL);
-				
+
 				$('#version_input').textbox('setValue', row.version);
 				$('#sn_input').textbox('setValue', row.sn);
 				$('#id_input').textbox('setValue', row.id);
+
 				$('#description_input').textbox('setValue', row.description);
 
 				$('#file_size_input').textbox('readonly', true);
@@ -319,6 +322,7 @@
 										msg : result.msg
 									});
 								}
+								$('#fv_datagrid').datagrid('reload');
 							}, "json");
 					}
 				});
@@ -327,7 +331,7 @@
 
 		//新增记录按钮
 		$('#tool_bar_add_btn').bind('click', function() {
-			
+
 			$('#add_panel').window("setTitle", "新增记录");
 			$('#add_panel').window('open');
 			$('#upload_div_part').show();
