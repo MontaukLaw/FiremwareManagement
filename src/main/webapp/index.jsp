@@ -35,8 +35,9 @@
 		</div>
 	</div>
 	<!-- 南部layout -->
-	<div data-options="region:'south',split:true" style="height:30px;">云耳科技有限公司
-		版权所有 系统维护 Marc 2018</div>
+	<div data-options="region:'south',split:true" style="height:30px;">
+		云耳科技有限公司 版权所有 系统维护 Marc 2018 <font color="gray">最后更新日期2018/11/21:::....</font>
+	</div>
 	<div data-options="region:'west',collapsible:false,split:true"
 		style="width:200px;"></div>
 
@@ -47,7 +48,7 @@
 		<div style="margin-bottom:5px">
 			<a href="#" class="easyui-linkbutton" iconCls="icon-add"
 				id="tool_bar_add_btn">新增版本记录</a> <a href="#"
-				class="easyui-linkbutton" iconCls="icon-edit" id="tool_bar_add_btn">编辑版本记录</a>
+				class="easyui-linkbutton" iconCls="icon-edit" id="tool_bar_edit_btn">编辑版本记录</a>
 			<a href="#" class="easyui-linkbutton" iconCls="icon-remove"
 				id="tool_bar_remove_btn">删除一条记录</a> <a href="#"
 				class="easyui-linkbutton" iconCls="icon-reload"
@@ -59,13 +60,14 @@
 				<tr>
 					<th data-options="field:'file_NAME',width:350,align:'center'">文件名</th>
 					<th data-options="field:'file_MD5',width:350,align:'center'">文件MD5编码</th>
+					<th data-options="field:'file_SIZE',width:80,align:'center'">文件尺寸</th>
 					<th data-options="field:'hardware_MODEL',width:150,align:'center'">硬件型号</th>
 					<th data-options="field:'id',width:350,align:'center',hidden:true">ID</th>
 					<th
 						data-options="field:'create_TIME',width:200,align:'center',formatter:function(value,row,index){  
                          var unixTimestamp = new Date(value); return unixTimestamp.toLocaleString();  
                          } ">记录创建日期</th>
-					<th data-options="field:'file_SIZE',width:80,align:'center'">文件尺寸</th>
+
 					<th data-options="field:'version',width:150,align:'center'">版本号</th>
 					<th data-options="field:'client_NAME',width:80,align:'center'">客户</th>
 					<th data-options="field:'sn',width:150,align:'center'">序列号</th>
@@ -82,6 +84,8 @@
 		data-options="collapsible:false,minimizable:false,maximizable:false">
 		<form style="padding:10px 20px 10px 40px;" id="add_edit_form"
 			method="post">
+			<input type="text" id="id_input" name="ID" style="width: 150px"
+				class="easyui-textbox" data-options="hidden:true">
 			<table>
 				<tr>
 					<td>客户</td>
@@ -102,8 +106,9 @@
 				</tr>
 				<tr>
 					<td>固件描述</td>
-					<td><input type="text" id="sn_input" name="DESCRIPTION"
-						class="easyui-textbox" style="width: 350px"> &nbsp;</td>
+					<td><input type="text" id="description_input"
+						name="DESCRIPTION" class="easyui-textbox" style="width: 350px">
+						&nbsp;</td>
 				</tr>
 				<tr>
 					<td>序列号</td>
@@ -131,7 +136,8 @@
 		</form>
 
 		<!-- 文件上传的部分 -->
-		<div class="upload" style="padding:10px 20px 10px 40px;">
+		<div id="upload_div_part" class="upload"
+			style="padding:10px 20px 10px 40px;">
 
 			<form id="uploadForm" enctype="multipart/form-data">
 				<input id="file" type="file" name="file" />
@@ -155,13 +161,13 @@
 		data-options="iconCls:'icon-save',modal:true,collapsible:false,minimizable:false,maximizable:false,closable:false">
 		<form style="padding:10px 20px 10px 40px;" id="login_form">
 			<p>
-				用户名: </br> <input type="text" name="LOGIN_NAME">
+				用户名: <br> <input type="text" name="LOGIN_NAME">
 			</p>
 			<p>
-				密码: </br> <input type="password" name="PASSWORD">
+				密码: <br> <input type="password" name="PASSWORD">
 			</p>
 			<div style="padding:5px;text-align:center;">
-				<a href="#" class="easyui-linkbutton" icon="icon-ok" id="login_btn">Ok</a>
+				<a href="#" class="easyui-linkbutton" icon="icon-ok" id="login_btn">OK</a>
 			</div>
 		</form>
 	</div>
@@ -252,21 +258,79 @@
 
 		})
 
+		$('#tool_bar_edit_btn').bind('click', function() {
+			var row = $('#fv_datagrid').datagrid("getSelected");
+			console.info(row);
+			if (row) {
+				var url = 'fv/updateFVByID.do';
+
+				//隐藏文件上传的部分div
+				$('#upload_div_part').hide();
+
+				//$.messager.confirm("确认", "确定要删除该条设备信息吗？", function(r) {
+				//打开add_update panel
+				$('#add_panel').window("setTitle", "修改记录");
+				$('#add_panel').window('open');
+				submitUrl = 'fv/updateFVByID.do';
+				$('#client_name_input').textbox('setValue', row.client_NAME);
+				$('#hardware_model_input').textbox('setValue', row.hardware_MODEL);
+				
+				$('#version_input').textbox('setValue', row.version);
+				$('#sn_input').textbox('setValue', row.sn);
+				$('#id_input').textbox('setValue', row.id);
+				$('#description_input').textbox('setValue', row.description);
+
+				$('#file_size_input').textbox('readonly', true);
+				$('#file_size_input').textbox('setValue', row.file_SIZE);
+
+				$('#file_name_input').textbox('readonly', true);
+				$('#file_name_input').textbox('setValue', row.file_NAME);
+
+				$('#file_md5_input').textbox('readonly', true);
+				$('#file_md5_input').textbox('setValue', row.file_MD5);
+
+			//});
+			}
+		});
+
 		//删除按钮
 		$('#tool_bar_remove_btn').bind('click', function() {
 			//console.info('remove_btn');
 			var row = $('#fv_datagrid').datagrid("getSelected");
-			//console.info(row);
+			console.info(row);
 			if (row) {
-				url = 'fv/removeByID.do';
-
+				var url = 'fv/removeFVByID.do';
+				$.messager.confirm("确认", "确定要删除该条设备信息吗？", function(r) {
+					if (r) {
+						$.post(
+							url, {
+								ID : row.id
+							}, function(result) {
+								if (result.success) {
+									$.messager.show({
+										title : "操作成功",
+										timeout : 1000,
+										msg : result.msg
+									});
+								} else {
+									$.messager.show({
+										title : "错误",
+										timeout : 1000,
+										msg : result.msg
+									});
+								}
+							}, "json");
+					}
+				});
 			}
 		});
 
 		//新增记录按钮
 		$('#tool_bar_add_btn').bind('click', function() {
+			
 			$('#add_panel').window("setTitle", "新增记录");
 			$('#add_panel').window('open');
+			$('#upload_div_part').show();
 			$('#add_edit_form').form('clear');
 			submitUrl = 'file/upload.do';
 		});
@@ -296,9 +360,6 @@
 		$('#tool_bar_reload_btn').bind('click', function() {
 			$('#fv_datagrid').datagrid('reload');
 		});
-
-
-
 
 	})
 </script>

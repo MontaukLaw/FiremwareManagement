@@ -22,7 +22,7 @@ public class FVTest {
 	@Resource(name = "firmwareVersionService")
 	private FirmwareVersionService firmwareVersionService;
 
-	//@Test
+	// @Test
 	public void listAllTest() {
 		PageData pd = new PageData();
 		Map userInfo = new HashMap();
@@ -34,13 +34,26 @@ public class FVTest {
 		}
 	}
 
-	@Test
+	// @Test
 	public void addFVTest() {
 		PageData pd = new PageData();
 		Map userInfo = new HashMap();
 		pd.putAll(userInfo);
 		try {
 			logger.info(firmwareVersionService.addFV(pd));
+		} catch (Exception e) {
+			logger.error(e.toString(), e);
+		}
+	}
+
+	@Test
+	public void removeFVTest() {
+		PageData pd = new PageData();
+		Map userInfo = new HashMap();
+		userInfo.put("ID", "54f2ec28-eb44-11e8-8f9c-00163e040582");
+		pd.putAll(userInfo);
+		try {
+			logger.info(firmwareVersionService.removeFV(pd));
 		} catch (Exception e) {
 			logger.error(e.toString(), e);
 		}

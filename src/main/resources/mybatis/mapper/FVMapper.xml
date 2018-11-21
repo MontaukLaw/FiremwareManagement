@@ -52,4 +52,11 @@
 		#{FILE_MD5},#{CLIENT_NAME},#{DESCRIPTION},#{VERSION},#{FILE_SIZE},now())
 	</insert>
 
+	<delete id="removeFV" parameterType="PD" flushCache="false">
+		DELETE
+		FROM FirmwareManagement.FIRMWARE_VERSION
+		WHERE
+		ID = #{ID}
+	</delete>
+
 </mapper>
