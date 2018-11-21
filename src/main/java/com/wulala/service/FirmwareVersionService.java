@@ -33,5 +33,8 @@ public class FirmwareVersionService {
 		return (int) dao.update("FirmwareVersionMapper.updateFV", pd);
 	}
 
+	public FirmwareVersion getFVByID(PageData pd) throws Exception {
+		return (FirmwareVersion) dao.findForObject("FirmwareVersionMapper.getFVByID", pd);
+	}
 
 }

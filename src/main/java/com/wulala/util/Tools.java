@@ -361,9 +361,8 @@ public class Tools {
 	}
 
 	public static boolean checkKey(String FKEY) {
-		return true;
-		// return MD5.md5("-NowOrNever-" + DateUtil.getDays() +
-		// "-NowOrNever-").equals(FKEY);
+		// return true;
+		return MD5.md5("-Cloud-" + DateUtil.getDays() + "-Hearing-").equals(FKEY);
 	}
 
 	/**
@@ -409,10 +408,14 @@ public class Tools {
 
 		// 测试
 		for (int i = 0; i < 100000; i++) {
-			System.out.println(getStringRandom(8));
+			// System.out.println(getStringRandom(8));
 			// System.out.println(10 / 6);
 		}
+
+		System.out.println("Key: " + MD5.md5("-Cloud-" + DateUtil.getDays() + "-Hearing-"));
+		System.out.println(DateUtil.getDays());
 	}
+
 }
 
 class SpellComparator implements Comparator {

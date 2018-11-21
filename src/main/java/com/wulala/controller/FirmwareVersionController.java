@@ -104,22 +104,62 @@ public class FirmwareVersionController extends BaseController {
 
 	@RequestMapping(value = "/listAllFVAPP")
 	@ResponseBody
-	public Grid listAllFVAPP() {
-		logger.info("start to handling listAllFV.do");
-		Grid grid = new Grid();
+	public JsonMsg listAllFVAPP() throws Exception {
+		logger.info("start to handling listAllFVAPP.do");
+		JsonMsg json = new JsonMsg();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		String key = (String) pd.get("KEY");
 		if (Tools.checkKey(key)) {
 			try {
 				List<FirmwareVersion> fvList = firmwareVersionService.listAllFV(pd);
-				grid.setRows(fvList);
-				grid.setTotal(fvList.size());
+				json.setObj(fvList);
+				json.setMsg("OK");
 			} catch (Exception e) {
-				e.printStackTrace();
+				json.setSuccess(false);
+				json.setMsg("ERROR");
 			}
+		} else {
+			json.setSuccess(false);
+			json.setMsg("Key Error");
 		}
-		return grid;
+		return json;
+	}
+
+	@RequestMapping(value = "/getFVByIDAPP")
+	@ResponseBody
+	public JsonMsg getFVByIDAPP() throws Exception {
+		logger.info("start to handling getFVByIDAPP.do");
+		JsonMsg json = new JsonMsg();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String key = (String) pd.get("KEY");
+		String id = (String) pd.get("ID");
+		if (id != null) {
+			if (Tools.checkKey(key)) {
+				try {
+					FirmwareVersion fv = firmwareVersionService.getFVByID(pd);
+					if(fv!=null){
+						json.setMsg("OK");
+					}else{
+						json.setMsg("No record");
+					}
+					json.setObj(fv);
+				} catch (Exception e) {
+					json.setSuccess(false);
+					json.setMsg("ERROR");
+					logger.error(e.getStackTrace());
+					// json.setObj(e.getStackTrace());
+				}
+			} else {
+				json.setSuccess(false);
+				json.setMsg("Key Error");
+			}
+		} else {
+			json.setSuccess(false);
+			json.setMsg("Must input ID");
+		}
+		return json;
 	}
 
 }

@@ -42,6 +42,17 @@
 		CREATE_TIME DESC
 	</select>
 
+	<!-- 列出所有记录 -->
+	<select id="getFVByID" resultMap="FirmwareVersionMap">
+		SELECT
+		<include refid="FVColumns" />
+		FROM
+		FirmwareManagement.FIRMWARE_VERSION WHERE 1=1
+		<if test="ID!=null and ID!=''">
+			AND ID=#{ID}
+		</if>
+	</select>
+
 	<insert id="addFV" parameterType="PD">
 		INSERT INTO
 		FirmwareManagement.FIRMWARE_VERSION (ID, HARDWARE_MODEL, SN,
@@ -74,10 +85,10 @@
 
 		<if test="DESCRIPTION!=null and DESCRIPTION!=''">,DESCRIPTION=#{DESCRIPTION}
 		</if>
-		
+
 		<if test="VERSION!=null and VERSION!=''">,VERSION=#{VERSION}
 		</if>
-		
+
 		WHERE ID=#{ID}
 	</update>
 
