@@ -28,5 +28,10 @@ public class FirmwareVersionService {
 	public int removeFV(PageData pd) throws Exception {
 		return (int) dao.delete("FirmwareVersionMapper.removeFV", pd);
 	}
+	
+	public int updateFV(PageData pd) throws Exception {
+		return (int) dao.update("FirmwareVersionMapper.updateFV", pd);
+	}
+
 
 }

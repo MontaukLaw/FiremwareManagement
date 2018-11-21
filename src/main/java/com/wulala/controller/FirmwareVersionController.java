@@ -39,6 +39,27 @@ public class FirmwareVersionController extends BaseController {
 		return grid;
 	}
 
+	@RequestMapping(value = "updateFVByID")
+	@ResponseBody
+	public JsonMsg updateFV() {
+		JsonMsg json = new JsonMsg();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		try {
+			int result = firmwareVersionService.updateFV(pd);
+			if (result > 0) {
+				json.setMsg("修改了" + result + "条数据");
+			} else {
+				json.setMsg("数据修改失败, 请联系系统管理员");
+			}
+		} catch (Exception e) {
+			json.setSuccess(false);
+			json.setMsg(e.getStackTrace().toString());
+		}
+		return json;
+
+	}
+
 	@RequestMapping(value = "removeFVByID")
 	@ResponseBody
 	public JsonMsg removeFV() {

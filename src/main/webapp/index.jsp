@@ -63,16 +63,14 @@
 					<th data-options="field:'file_SIZE',width:80,align:'center'">文件尺寸</th>
 					<th data-options="field:'hardware_MODEL',width:150,align:'center'">硬件型号</th>
 					<th data-options="field:'id',width:350,align:'center',hidden:true">ID</th>
-					<th
-						data-options="field:'create_TIME',width:200,align:'center',formatter:function(value,row,index){  
-                         var unixTimestamp = new Date(value); return unixTimestamp.toLocaleString();  
-                         } ">记录创建日期</th>
-
 					<th data-options="field:'version',width:150,align:'center'">版本号</th>
 					<th data-options="field:'client_NAME',width:80,align:'center'">客户</th>
 					<th data-options="field:'sn',width:150,align:'center'">序列号</th>
 					<th data-options="field:'description',width:150,align:'center'">补充说明</th>
-
+					<th
+						data-options="field:'create_TIME',width:200,align:'center',formatter:function(value,row,index){  
+                         var unixTimestamp = new Date(value); return unixTimestamp.toLocaleString();  
+                         } ">记录创建日期</th>
 				</tr>
 			</thead>
 		</table>
@@ -157,7 +155,7 @@
 	<!-- 登陆遮罩window -->
 	<div id="login_win" class="easyui-window" title="登陆"
 		style="width:300px;height:250px;"
-		data-options="iconCls:'icon-save',modal:true,collapsible:false,minimizable:false,maximizable:false,closable:false">
+		data-options="modal:true,collapsible:false,minimizable:false,maximizable:false,closable:false">
 		<form style="padding:10px 20px 10px 40px;" id="login_form">
 			<p>
 				用户名: <br> <input type="text" name="LOGIN_NAME">
@@ -182,6 +180,7 @@
 		//测试脚本启动及jQuery引用
 		console.info('scrtip start..');
 
+		//id_input在add_update panel需要隐藏
 		$('#id_input').next().hide();
 
 		//将panel隐藏一下
@@ -195,10 +194,7 @@
 		//定义login_form的url, 返回数据处理
 		$('#login_form').form({
 			url : 'sys/findSysUserByLoginNamePassword.do',
-			onSubmit : function() {
-				// do some check
-				// return false to prevent submit;
-			},
+			onSubmit : function() {},
 			success : function(data) {
 				//change the JSON string to javascript object
 				var data = eval('(' + data + ')');
@@ -211,27 +207,21 @@
 						timeout : 1000,
 						showType : 'slide'
 					});
-				//alert(data.msg);
 				}
 			}
 		});
 
 		$('#add_edit_form').form({
-			url : 'fv/addFV.do',
-			onSubmit : function() {
-				// do some check
-				// return false to prevent submit;
-			},
 			success : function(data) {
 				//change the JSON string to javascript object
-				console.info(data);
+				//console.info(data);
 				var data = eval('(' + data + ')');
-				console.info(data);
+				//console.info(data);
 				if (data.success) {
 					$('#add_panel').window('close');
 					$.messager.show({
 						title : '成功',
-						msg : '数据插入成功',
+						msg : '数据保存成功',
 						timeout : 1000,
 						showType : 'slide'
 					});
@@ -259,21 +249,28 @@
 
 		})
 
+		//编辑按钮绑定事件
 		$('#tool_bar_edit_btn').bind('click', function() {
+			//获取选择到的数据, 后面要拿这行数据填充要修改的数据form
 			var row = $('#fv_datagrid').datagrid("getSelected");
 			console.info(row);
 			if (row) {
-				var url = 'fv/updateFVByID.do';
+				//var url = 'fv/updateFVByID.do';
 
 				//隐藏文件上传的部分div
 				$('#upload_div_part').hide();
 
-				//$.messager.confirm("确认", "确定要删除该条设备信息吗？", function(r) {
 				//打开add_update panel
-				$('#add_panel').window("setTitle", "修改记录");
+				$('#add_panel').window("setTitle", "修改记录(已经上传的文件的信息不可以直接修改, 有必要可以删除记录后重新上传)");
 				$('#add_panel').window('open');
-				submitUrl = 'fv/updateFVByID.do';
 
+				//修改form的action
+				$('#add_edit_form').attr('action', "fv/updateFVByID.do");
+
+				//submitUrl = 'fv/updateFVByID.do';
+				//console.info(submitUrl);
+
+				//逐一填充数据
 				$('#client_name_input').textbox('setValue', row.client_NAME);
 				$('#hardware_model_input').textbox('setValue', row.hardware_MODEL);
 
@@ -284,27 +281,31 @@
 				$('#description_input').textbox('setValue', row.description);
 
 				$('#file_size_input').textbox('readonly', true);
-				$('#file_size_input').textbox('setValue', row.file_SIZE);
+				$('#file_size_input').textbox('setValue', row.file_SIZE + '  (不可更改)');
 
 				$('#file_name_input').textbox('readonly', true);
-				$('#file_name_input').textbox('setValue', row.file_NAME);
+				$('#file_name_input').textbox('setValue', row.file_NAME + '  (不可更改)');
 
 				$('#file_md5_input').textbox('readonly', true);
-				$('#file_md5_input').textbox('setValue', row.file_MD5);
+				$('#file_md5_input').textbox('setValue', row.file_MD5 + '  (不可更改)');
 
 			//});
 			}
 		});
 
-		//删除按钮
+		//删除按钮的绑定事件
 		$('#tool_bar_remove_btn').bind('click', function() {
 			//console.info('remove_btn');
+			//获取选择的行
 			var row = $('#fv_datagrid').datagrid("getSelected");
-			console.info(row);
+			//console.info(row);
 			if (row) {
+				//将url指向删除接口removeFVByID.do
 				var url = 'fv/removeFVByID.do';
+				//需要用户对删除做确定,避免错误操作
 				$.messager.confirm("确认", "确定要删除该条设备信息吗？", function(r) {
 					if (r) {
+						//用户确认之后, 就post到删除接口去
 						$.post(
 							url, {
 								ID : row.id
@@ -331,18 +332,26 @@
 
 		//新增记录按钮
 		$('#tool_bar_add_btn').bind('click', function() {
-
+			//设置title
 			$('#add_panel').window("setTitle", "新增记录");
+
+			//打开对话框
 			$('#add_panel').window('open');
+
+			//显示文件上传的部分div
 			$('#upload_div_part').show();
+
+			//将原有的表单内容清除
 			$('#add_edit_form').form('clear');
-			submitUrl = 'file/upload.do';
+
+			//修改表单的提交地址为新增用接口addFV.do
+			$('#add_edit_form').attr('action', "fv/addFV.do");
+		//submitUrl = 'fv/addFV.do';
 		});
 
 		//确定提交表单按钮
 		$('#save_panel_comfirm_btn').bind('click', function() {
 			console.info('save_panel_comfirm_btn clicked');
-			submitUrl = 'fv/addFV.do';
 			if ($('#file_name_input').textbox('getValue') == '') {
 				$.messager.show({
 					title : '提示',

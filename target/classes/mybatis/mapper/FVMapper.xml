@@ -54,9 +54,31 @@
 
 	<delete id="removeFV" parameterType="PD" flushCache="false">
 		DELETE
-		FROM FirmwareManagement.FIRMWARE_VERSION
+		FROM
+		FirmwareManagement.FIRMWARE_VERSION
 		WHERE
 		ID = #{ID}
 	</delete>
+
+	<update id="updateFV" parameterType="PD" flushCache="false">
+		UPDATE FirmwareManagement.FIRMWARE_VERSION SET
+		ID=#{ID}
+		<if test="HARDWARE_MODEL!=null and HARDWARE_MODEL !=''">,HARDWARE_MODEL=#{HARDWARE_MODEL}
+		</if>
+
+		<if test="SN!=null and SN!=''">,SN=#{SN}
+		</if>
+
+		<if test="CLIENT_NAME!=null and CLIENT_NAME!=''">,CLIENT_NAME=#{CLIENT_NAME}
+		</if>
+
+		<if test="DESCRIPTION!=null and DESCRIPTION!=''">,DESCRIPTION=#{DESCRIPTION}
+		</if>
+		
+		<if test="VERSION!=null and VERSION!=''">,VERSION=#{VERSION}
+		</if>
+		
+		WHERE ID=#{ID}
+	</update>
 
 </mapper>
