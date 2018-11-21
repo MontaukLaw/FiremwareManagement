@@ -1,9 +1,9 @@
 package com.wulala.test;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -38,6 +38,16 @@ public class MD5Test {
 		// 获取key对应的value值
 		properties.getProperty("proc");
 
+	}
+	
+	@Test
+	public void readP() throws Exception{
+		String path = MD5Test.class.getClassLoader().getResource("prod.properties").getPath();
+		FileInputStream in = new FileInputStream(path);
+		Properties prop = new Properties();
+		prop.load(in);
+		System.out.println(prop.getProperty("proc"));
+		
 	}
 
 }

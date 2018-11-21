@@ -26,17 +26,22 @@ public class UploadController extends BaseController {
 	@ResponseBody
 	public JsonMsg upload(MultipartFile file) {
 		logger.info("start to handling uploading");
+
 		PageData pd = new PageData();
 		pd = this.getPageData();
+
 		JsonMsg json = new JsonMsg();
-		logger.info("xxx" + pd.get("HARDWARE_MODEL"));
+
+		// logger.info("xxx" + pd.get("HARDWARE_MODEL"));
 		try {
 			SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyyMMdd\\HHmmss");
+
 			// 获取日期,组成目录名
 			String subFolderName = dateformat1.format(new Date()) + "\\";
 
 			// 获取根目录名, 当然这个解决方案很烂, 但是没有google到正确的方法, 回头再改
-			String baseFolder = Params.BASE_FOLDER;
+			// 找到问题了,可以读properties文件了
+			String baseFolder = Params.getBaseFolder();
 
 			// 组成长文件名
 			String fullFilePath = baseFolder + subFolderName + file.getOriginalFilename();
