@@ -62,7 +62,7 @@
 					<th data-options="field:'file_MD5',width:350,align:'center'">文件MD5编码</th>
 					<th data-options="field:'file_SIZE',width:80,align:'center'">文件尺寸</th>
 					<th data-options="field:'hardware_MODEL',width:150,align:'center'">硬件型号</th>
-					<th data-options="field:'id',width:350,align:'center',hidden:true">ID</th>
+					<th data-options="field:'id',width:350,align:'center'">ID</th>
 					<th data-options="field:'version',width:150,align:'center'">版本号</th>
 					<th data-options="field:'client_NAME',width:80,align:'center'">客户</th>
 					<th data-options="field:'sn',width:150,align:'center'">序列号</th>
